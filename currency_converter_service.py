@@ -8,7 +8,7 @@ class CurrencyConverterService:
             CurrencyType.DOLLAR: 1.0,
             CurrencyType.REAL: 5.0,
             CurrencyType.EURO: 0.9,
-            CurrencyType.POUND: 0.74
+            CurrencyType.POUND: 0.75
         }
 
     def convert(self, from_currency: str, to_currency: str, value: float) -> float:
@@ -17,7 +17,9 @@ class CurrencyConverterService:
         if not value or value < 0:
             raise InvalidValueException
 
-        return 0.0
+        value_in_dollar = value / self.currency_value_to_dollar_mapper[from_currency_type]
+        value_in_target_currency = value_in_dollar * self.currency_value_to_dollar_mapper[to_currency_type]
+        return round(value_in_target_currency, 2)
 
     @classmethod
     def __parse_currency(cls, currency: str):
